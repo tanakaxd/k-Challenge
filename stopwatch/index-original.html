@@ -1,0 +1,60 @@
+	<!DOCTYPE html>
+	<html lang="ja">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title> Document </title>
+	</head>
+
+	<body>
+		<input type="submit" name="" id="start" value="start">
+		<input type="submit" name="" id="stop" value="stop">
+		<input type="submit" name="" id="clear" value="clear">
+		<p id="p">
+			<span id="day">
+			</span> <span id="hour">
+			</span> <span id="min">
+			</span> <span id="ms">
+			</span> </p>
+		<script>
+			document.getElementById("start").addEventListener("click",
+				function (event) {
+
+					const counter = count(event);
+					document.getElementById('day').textContent =
+						counter[0];
+					document.getElementById('hour').textContent =
+						counter[1];
+					document.getElementById('min').textContent =
+						String(counter[2]).padStart(2, '0');
+					document.getElementById('ms').textContent =
+						String(counter[3]).padStart(3, '0');
+					refresh();
+				}
+			);
+
+			function count(pt) {
+				const nt = new Date();
+
+				const rest = nt.getTime() - pt.getTime();
+				const ms = Math.floor(rest % 1000);
+				// const sec = Math.floor(rest / 1000) % 60;
+				const min = Math.floor(rest / 1000 / 60) % 60;
+				const hours = Math.floor(rest / 1000 / 60 / 60) % 24;
+				const days = Math.floor(rest / 1000 / 60 / 60 / 24);
+				const count = [days, hours, min, ms];
+			}
+
+
+			function refresh() {
+				setTimeout(recalc, 1000);
+			}
+
+			function recalc() {
+
+			}
+		</script>
+	</body>
+
+	</html>

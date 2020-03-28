@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Document </title>
+</head>
+
+<body>
+    <input type="submit" name="" id="start" value="start">
+    <input type="submit" name="" id="stop" value="stop">
+    <input type="submit" name="" id="clear" value="clear">
+    <p id="p">
+        <span id="day">
+        </span> <span id="hour">
+        </span> <span id="min">
+        </span> <span id="sec">
+        </span> <span id="ms">
+        </span> </p>
+    <script>
+        //#region stopwatch
+        var startTime;
+        var offsetTime;
+        var intervalID;
+
+        document.getElementById("start").addEventListener("click",
+            (event) => {
+                //初期時間取得
+                if (!startTime) {
+                    startTime = new Date();
+                }
+
+                intervalID = setInterval(() => {
+
+                    //現在時間取得
+                    const stopWatchTime = count(startTime);
+
+                    //DOMに反映
+                    refreshDOM(stopWatchTime);
+                }, 10);
+
+                console.log(intervalID);
+
+                createDisplayP_mk2("test");
+                // let p = document.createElement("p");
+                // document.getElementById("p").appendChild(p);
+            }
+        );
+
+        document.getElementById("stop").addEventListener("click",
+            (event) => {
+                clearInterval(intervalID);
+            }
+        );
+
+        document.getElementById("clear").addEventListener("click",
+            (event) => {
+                clearInterval(intervalID);
+                startTime = null;
+                refreshDOM();
+            }
+        );
+
+        //始まりの時間をDateオブジェクトとして渡すと、配列形式で
+        //現在時間との差を返してくれる関数
+        function count(start) {
+            const now = new Date();
+            const rest = now.getTime() - start.getTime();
+            const ms = Math.floor(rest % 1000);
+            const sec = Math.floor(rest / 1000) % 60;
+            const min = Math.floor(rest / 1000 / 60) % 60;
+            const hours = Math.floor(rest / 1000 / 60 / 60) % 24;
+            const days = Math.floor(rest / 1000 / 60 / 60 / 24);
+            const count = [days, hours, min, sec, ms];
+            return count;
+        }
+
+        //[days, hours, min, sec, ms]という形式の時間を引数として渡すと
+        //それをDOM要素に反映してくれる関数
+        function refreshDOM(counter) {
+            if (!counter) {
+                counter = [0, 0, 0, 0, 0];
+            }
+            document.getElementById('day').textContent =
+                counter[0];
+            document.getElementById('hour').textContent =
+                counter[1];
+            document.getElementById('min').textContent =
+                String(counter[2]).padStart(2, '0');
+            document.getElementById('sec').textContent =
+                String(counter[3]).padStart(2, '0');
+            // document.getElementById('ms').textContent =
+            //     String(counter[4]).padStart(3, '0');
+            display("ms", String(counter[4]).padStart(3, '0'));
+        }
+
+        //#endregion
+
+
+        //#region Human array
+
+        class Human {
+            constructor(id, height) {
+                this.height = height;
+                this.id = id;
+            }
+
+            grow(cm) {
+                this.height += cm;
+            }
+        }
+        var group = new Array();
+        for (var i = 0; i < 100; i++) {
+            group.push(new Human(i + 1, getRandomInt(150, 200)));
+            //console.log(group[i]);
+        }
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+            //The maximum is exclusive and the minimum is inclusive
+        }
+
+        function getMax(array) {
+            let max = array[0];
+            for (let i = 1; i < array.length; i++) {
+                if (max < array[i]) {
+                    max = array[i];
+                }
+            }
+            return max;
+        }
+
+        function getTallestId(group) {
+            let winner = group[0];
+            for (let i = 1; i < group.length; i++) {
+                //winner = winner.height > group[i].height ? winner : group[i];
+                if (winner.height < group[i].height) {
+                    winner = group[i];
+                }
+            }
+            return winner.id;
+        }
+
+        console.log(group);
+        console.log(getTallestId(group));
+
+        console.log(getMax([1, 2, 3, 0, 12, 38, 0, 1]));
+
+        //#endregion
+
+
+
+
+        function delay(func, ms) {
+            setTimeout(func, ms);
+        }
+
+        function setIntervalWithoutSetInterval(func, ms) {
+
+            function funcplus() {
+                func();
+                setTimeout(funcplus, ms);
+            }
+            //setTimeout(func, ms);
+            funcplus();
+        }
+
+        setIntervalWithoutSetInterval(() => {
+            createDisplayP("delay");
+        }, 1000)
+
+
+        // delay(() => {
+        //     //console.log("delay");
+        //     createDisplayP("delay");
+        // }, 3000);
+
+
+
+        //DOM&display
+
+        function display(id, text) {
+            document.getElementById(id).innerText = text;
+        }
+
+        //引数をbody下の新しいPタグに入れて表示する
+        function createDisplayP(text) {
+            let p = document.createElement("p");
+            p.innerText = text;
+            document.body.appendChild(p);
+            createDisplayP(text);
+        }
+
+        createDisplayP("append");
+
+        //引数を任意のID名の要素下の新しいPタグに入れて表示する
+        //第二引数がない場合はbody下の新しいPタグに入れて表示する
+        function createDisplayP_mk2(text, parentId) {
+            let p = document.createElement("p");
+            p.innerText = text;
+            let element = document.getElementById(parentId);
+            element ? element.appendChild(p) : document.body.appendChild(p);
+        }
+
+
+        let c = 5;
+        // function a(){
+
+        // }
+        let a = function () {
+            //何かする
+        }
+
+        let b = getMax(group);
+    </script>
+    <!-- <script src="js/calculator.js"></script>
+    <script src="js/script.js"></script> -->
+</body>
+<!-- 
+let option = {
+    tag: "p",
+    array : group
+}
+
+hyouji(option);
+
+hyouji("p", group);
+ -->
+
+
+</html>
+<!-- 
+
+1.配列を受け取って全ての合計値を返す関数
+2.配列を受け取って全ての要素を2倍にして返す関数
+3.配列を受け取ってその中の奇数だけを抽出した配列を返す関数
+4.ひとつの目の要素が一の段、二つの目の要素が二の段・・・9個目の要素が9の段といった長さ95の配列を作る関数
+
+5.任意の文字列を受け取ってそれをPタグとしてDOMに出力する関数
+6.文字列一つとID名を受け取って、そのID名のPタグとしてその文字列をDOMに出力する関数
+7.任意の長さの配列を受け取って全ての要素をそれぞれ独立したｐタグとしてDOMに出力する関数
+8.長さが５の配列を受け取って、その要素を順に[days, hours, min, sec, ms]というIDのDOM要素に出力する関数
+
+9.今の時間をDateオブジェクト形式で返す関数
+今の時間とUTCとの差をミリ秒で返す関数
+今の時間とその日が始まった時点からの経過ミリ秒を返す関数
+任意のDateオブジェクトを受け取って、その一時間後のDateオブジェクトを返す関数
+任意のDateオブジェクトを受け取って、現在時間との差を配列形式（例えば[days, hours, min, sec, ms]）で返す関数
+
+任意の関数を受け取ってその関数を１秒数後に実行する関数
+任意の関数と任意の秒数を受け取ってその関数をその秒数「後」に実行する関数
+任意の関数と任意の秒数を受け取ってその関数をその秒数「毎」に実行する関数
+単純なClearinterval
+任意の関数とふたつの秒数AとBを受け取ってその関数を秒数A「毎」に実行して秒数B後にキャンセルする関数
+任意の関数を受け取って、１～３秒毎に実行する関数（間隔は実行ごとにランダム）
+任意の関数を受け取って、2と3の倍数秒毎に実行する関数
+
+人オブジェクトの配列を受け取って、全ての人の伸長を格納した配列を返す関数
+人オブジェクトの配列を受け取って、平均身長を返す関数
+人オブジェクトの配列を受け取って、最も身長が高い人のIDを返す関数
+人オブジェクトの配列を受け取って、全員の伸長を1.2倍にする関数
+人オブジェクトの配列を受け取って、身長が180cmぴったりの人の配列を返す関数
+人オブジェクトの配列を受け取って、平均身長に最も近い人を返す関数
+
+
+ライブラリを作ること
+モジュール性の重要さ
+
+-->
