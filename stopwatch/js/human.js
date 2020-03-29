@@ -1,9 +1,10 @@
 //#region Human array
 
+//Human classの定義
 class Human {
     constructor(id, height) {
-        this.height = height;
         this.id = id;
+        this.height = height;
     }
 
     grow(cm) {
@@ -12,10 +13,18 @@ class Human {
 }
 
 
-var group = new Array();
-for (var i = 0; i < 100; i++) {
-    group.push(new Human(i + 1, getRandomInt(150, 200)));
-    //console.log(group[i]);
+
+//Humanを使った実行
+var human_group = new Array();
+for (var i = 0; i < 300; i++) {
+    human_group.push(new Human(i + 1, getRandomInt(150, 200)));
+    //console.log(human_group[i]);
+}
+
+var human_group_b = new Array();
+for (var i = 0; i < 300; i++) {
+    human_group_b.push(new Human(i + 1, getRandomInt(150, 200)));
+    //console.log(human_group[i]);
 }
 
 function getRandomInt(min, max) {
@@ -35,19 +44,19 @@ function getMax(array) {
     return max;
 }
 
-function getTallestId(group) {
-    let winner = group[0];
-    for (let i = 1; i < group.length; i++) {
-        //winner = winner.height > group[i].height ? winner : group[i];
-        if (winner.height < group[i].height) {
-            winner = group[i];
+function getTallestId(human_group) {
+    let winner = human_group[0];
+    for (let i = 1; i < human_group.length; i++) {
+        //winner = winner.height > human_group[i].height ? winner : human_group[i];
+        if (winner.height < human_group[i].height) {
+            winner = human_group[i];
         }
     }
     return winner.id;
 }
 
-console.log(group);
-console.log(getTallestId(group));
+console.log(human_group);
+console.log(getTallestId(human_group));
 
 console.log(getMax([1, 2, 3, 0, 12, 38, 0, 1]));
 
