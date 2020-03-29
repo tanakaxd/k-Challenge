@@ -16,11 +16,12 @@ function prime_number_generator(num) {
             primes.push(i);
         }
 
-        if (primes.length == num) {
-            return primes;
-        }
+
     }
+
+    return primes.length;
+
 }
 
 
-console.log(prime_number_generator(100));
+console.log(prime_number_generator(1000));
