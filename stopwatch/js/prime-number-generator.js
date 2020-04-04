@@ -25,3 +25,29 @@ function prime_number_generator(num) {
 
 
 console.log(prime_number_generator(1000));
+
+
+
+
+
+
+
+function addfive(num) {
+    num = num + 5;
+}
+
+function addfive_array(array) {
+    array[0] = array[0] + 5;
+}
+
+// for (let i = 0; i < array.length; i++) {
+//     array[i] = array[i] + 5;
+// }
+
+let a = 3;
+addfive(a);
+console.log(a);
+
+let b = [3];
+addfive_array(b);
+console.log(b);
